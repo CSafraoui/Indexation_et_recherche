@@ -1,0 +1,118 @@
+
+
+PUT /lex
+{
+  "settings": {
+    "analysis": {
+      "filter": {
+        "french_elision": {
+          "type":         "elision",
+          "articles_case": true,
+          "articles": [
+              "l", "m", "t", "qu", "n", "s",
+              "j", "d", "c", "jusqu", "quoiqu",
+              "lorsqu", "puisqu"
+            ]
+        },
+        "french_stop": {
+          "type":       "stop",
+          "stopwords":  "_french_" 
+        },
+        "french_stemmer": {
+          "type":       "stemmer",
+          "language":   "light_french"
+        }
+        ,
+        "arabic_stop": {
+          "type":       "stop",
+          "stopwords":  "_arabic_" 
+        },
+        "arabic_keywords": {
+          "type":       "keyword_marker",
+          "keywords":   ["مثال"] 
+        },
+        "arabic_stemmer": {
+          "type":       "stemmer",
+          "language":   "arabic"
+        }
+      },
+      "analyzer": {
+        "bigram": {
+            "type": "custom",
+            "tokenizer": "standard",
+            "filter": ["lowercase","shingle"]
+          },
+        "french": {
+          "tokenizer":  "standard",
+          "filter": [
+            "french_elision",
+            "lowercase",
+            "asciifolding",
+            "french_stop",
+            "french_stemmer"
+          ]
+        },
+        "arabic": {
+          "tokenizer":  "standard",
+          "filter": [
+            "lowercase",
+            "decimal_digit",
+            "arabic_stop",
+            "arabic_normalization",
+            "arabic_keywords",
+            "arabic_stemmer"
+          ]
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      
+      "@timestamp": {
+        "type": "date"
+      },
+      "@version": {
+        "type": "text",
+        "fields": {
+"keyword": {
+"type": "keyword",
+"ignore_above": 256
+}
+}
+},
+"id": {
+"type": "long"
+},
+"libelle_ar": {
+"type": "text",
+"fields": {
+  "bigram": { 
+      "type":     "text",
+      "analyzer": "bigram"
+  },
+"keyword": {
+"type": "keyword",
+"ignore_above": 256
+}
+},
+"analyzer": "arabic"
+},
+"libelle_fr": {
+  
+"type": "text",
+"fields": {
+  "bigram": { 
+      "type":     "text",
+      "analyzer": "bigram"
+  },
+"keyword": {
+"type": "keyword",
+"ignore_above": 256
+}
+},
+"analyzer": "french"
+}
+}
+}
+}

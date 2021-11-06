@@ -1,0 +1,425 @@
+﻿@model Nest.ISearchResponse<Lexique>
+@{
+    ViewBag.Title = "Chercher en utilisant Nest Elasticsearch";
+
+    string[] TableHeaders = new string[] {"ID"
+                        ,"Nom"
+                        ,"Contenu"
+                        ,"Nbr d'occurence"
+                        ,"Ouvrire"
+                        ,"Supprimer"
+    };
+}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/jquery-ui.js"></script>
+    <script src="~/js/paging.js"></script>
+    <link href="~/css/jquery-ui.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link href="~/css/Index.css?v=<?=time();?>" rel="stylesheet" />
+    <style>
+        .mycolor {
+            background-color: #FFFF00;
+        }
+    </style>
+</head>
+<body>
+    <div @*style="font-family:Arial"*@>
+        <form asp-controller="Attachement" asp-action="Index" method="post" id="form">
+            <div class="container">
+                  <div class="row">
+             @if (TempData["query"] != null)
+            {
+                    <div >
+                      <input type="text" name="query" value="@TempData["query"]" id="txtSearch" class="seaech-input" />
+                        <input type="submit" value="Chercher" class="search-button"/>
+                    </div>
+                @if (TempData["simple"] != null)
+                {
+                    <div>
+                      <span>@Html.RadioButton("SelectedAnswer", "simple", new { Checked = "checked" })</span>
+                      <label class="form-check-label" for="flexCheckDefault">
+                        Simple
+                      </label>
+                    
+                      <span >@Html.RadioButton("SelectedAnswer", "avancee")</span>
+                      <label class="form-check-label" for="flexCheckChecked">
+                        Avancee
+                      </label>
+                
+                    
+                          </div>
+
+
+                    
+                }
+                else if (TempData["simple"] == null)
+                {
+                    <div >
+                <input type="text" name="query" id="txtSearch" class="seaech-input"/>
+                        <input type="submit" value="Chercher" class="search-button"/>
+                      </div>
+                          <div >
+                             
+                      <span>@Html.RadioButton("SelectedAnswer", "simple")</span>
+                      <label class="form-check-label" for="flexCheckDefault">
+                        Simple
+                      </label>
+                    
+                    
+                      <span >@Html.RadioButton("SelectedAnswer", "avancee", new { Checked = "checked" })</span>
+                      <label class="form-check-label" for="flexCheckChecked">
+                        Avancee
+                      </label>
+                    
+                    
+                          </div>
+                    
+                }
+            }
+            else
+            {
+                      <div >
+                <input type="text" name="query" id="txtSearch" class="seaech-input"/>
+                          <input type="submit" value="Chercher" class="search-button"/>
+                      </div>
+                          <div class="search-type">
+
+                              
+
+                      <span>@Html.RadioButton("SelectedAnswer", "simple", new { Checked = "checked" })</span>
+                      <label class="form-check-label" for="flexCheckDefault">
+                        Simple
+                      </label>
+                   
+                      <span >@Html.RadioButton("SelectedAnswer", "avancee")</span>
+                      <label class="form-check-label" for="flexCheckChecked">
+                        Avancee
+                      </label>
+                    </div>
+                    
+                          
+            }
+            
+           </div>
+           
+        </form>
+        @if (TempData["correction"] != null && TempData["correction"] != "")
+        {
+            <div style=" margin: 20px 0px 20px 0px; font-size: 22px;">
+                <span>Vous voullez dire :</span>
+                <a href="@Url.Action("Index", "Attachement", new { query = @TempData["correction"] , selectedAnswer = TempData["simple"] })" class="flag">@TempData["correction"]</a>
+            </div>
+        }
+    </div>
+
+   
+
+
+
+
+
+
+
+    
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h2>Résultat de la recherche</h2>
+                </div>
+                <div class="col-sm-6">
+                    <!-- Trigger/Open The Modal -->
+                    <button id="myBtn2">Ajouter</button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <table class="table tableData" id="tbldata">
+                <thead>
+                    <tr style="height:5px;">
+                        
+                            @foreach (var head in TableHeaders)
+                            {
+                                <th scope="col">
+                                    <span>@head</span>
+                                </th>
+                            }
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (TempData["query"] != null && ViewBag.data.Count != 0)
+                    {
+                        @foreach (var item in ViewBag.data)
+                        {
+
+                            <tr style="height:5px;" id="row_@item.Id">
+                               
+                                
+                                <td><span>@item.Id</span></td>
+                                
+                                <td><span>@Html.Raw(@item.Name)</span></td>
+                                <td><span>@Html.Raw(@item.Content)</span></td>
+                                <td><span>@Html.Raw(@item.Count)</span></td>
+                                <td><a href="#" onclick="window.open('@Url.Content("~/Uploads/" + @item.Name)', '_blank', 'fullscreen=yes'); return false;">Open</a></td>
+                                <td>
+                                    <p class="p1">
+                                        <a onclick="myFunction('@item.Id', '@item.Name', '@(TempData["query"])', '@(TempData["simple"])')" title="@item.Id" class="flag" style="margin: 0px 10px; padding: 0px 10px;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" color="#1A6DCD" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                                            </svg>
+                                        </a>
+                                    </p>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+
+                    <td colspan="4">Pas de resultat</td>
+                    <style type="text/css">
+                        .paging-nav {
+                            display: none;
+                        }
+                        #time {
+                            display: none;
+                        }
+                    </style>
+                    }
+                    </tbody>
+                </table>
+                <div id="time" style="float: initial;">
+                    @if (TempData["time_search"] != null && TempData["time_search"].ToString() != "0")
+                    { 
+                        <span>@TempData["count"] element en @TempData["time_search"] s</span>
+                    }
+                </div>
+            </div>
+        </div>
+   
+        @if (TempData["message"] != null)
+        {
+            <script type="text/javascript">
+
+            window.onload = function () {
+                alert("@TempData["message"]");
+            };
+            </script>
+
+        }
+        <script>
+        $(document).ready(function () {
+            $(".p1").tooltip({
+                classes: {
+                    "ui-tooltip": "highlight"
+                }
+            });
+        });
+        $(document).ready(
+            function () {
+                // Select/Deselect checkboxes
+                var checkbox = $('table tbody input[type="checkbox"]');
+                $("#selectAll").click(function () {
+                    if (this.checked) {
+                        checkbox.each(function () {
+                            this.checked = true;
+                        });
+                    } else {
+                        checkbox.each(function () {
+                            this.checked = false;
+                        });
+                    }
+                });
+                checkbox.click(function () {
+                    if (!this.checked) {
+                        $("#selectAll").prop("checked", false);
+                    }
+                });
+            });
+        $(function () {
+
+            $('#tbldata').paging({ limit: 5 });
+
+        })
+         // autocomplete
+         $(function () {
+        $('#txtSearch').autocomplete({
+            source: '@Url.Action("GetLexiques")',
+            minLength: 1
+        });
+    });
+        </script>
+    @*hidden field for storing current employeeId*@
+    <input type="hidden" id="hiddenId" />
+    <input type="hidden" id="hiddenQuery"/>
+    <input type="hidden" id="hiddenSearch"/>
+    <input type="hidden" id="hiddenName"/>
+    <input type="hidden" id="hiddenPath"/>
+
+<!-- Trigger/Open The Modal -->
+<!--<button id="myBtn1">Open Modal</button>-->
+
+<!-- The Modal -->
+<div id="myModal1" class="modal1">
+
+  <!-- Modal content -->
+  <div class="modal1-content">
+    <div class="modal1-header">
+      <span class="close1">&times;</span>
+      <h2>Supprimer un element : <span id="demo"></span></h2>
+        @*<h2 id="demo"></h2>*@
+    </div>
+    <div class="modal1-body">
+      <p>Êtes-vous sûr de vouloir supprimer cet enregistrement ? </p>
+      <p>Cette action ne peut pas être annulée. </p>
+    </div>
+    <div class="modal1-footer">
+        <div>
+        <button class="Btn" onclick="closeModal1()">Annuler</button>
+        <button class="Btn" onclick="deleteId()">Supprimer</button>
+            </div> 
+    </div>
+  </div>
+
+</div>
+
+<script>
+
+//// Get the modal
+//var modal = document.getElementById("myModal1");
+
+//// Get the button that opens the modal
+//var btn = document.getElementById("myBtn1");
+
+//// Get the <span> element that closes the modal
+//var span = document.getElementsByClassName("close1")[0];
+
+//// When the user clicks the button, open the modal
+//btn.onclick = function() {
+//  modal.style.display = "block";
+//}
+
+//// When the user clicks on <span> (x), close the modal
+//span.onclick = function() {
+//  modal.style.display = "none";
+//}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+    }
+
+
+    function deleteId() {
+        var eltId = $("#hiddenId").val();
+        console.log(eltId);
+        var eltQuery = $("#hiddenQuery").val();
+        console.log(eltQuery);
+        var eltSearch = $("#hiddenSearch").val();
+        console.log(eltSearch);
+        var eltName = $("#hiddenName").val();
+        console.log(eltName);
+        
+
+      
+        var url = '@Html.Raw(Url.Action("Delete", "Attachement", new { id = "__eltId__", name = "__eltName__" , query = "__eltQuery__", selectedAnswer = "__eltSearch__" }))';
+        var params = url.replace('__eltId__', eltId).replace('__eltName__', eltName).replace('__eltQuery__', eltQuery).replace('__eltSearch__', eltSearch);
+        window.location.href = params;
+    }
+    function closeModal1() {
+        var modal = document.getElementById("myModal1");
+        modal.style.display = "none";
+    }
+    function closeModal2() {
+        var modal = document.getElementById("myModal2");
+        modal.style.display = "none";
+    }
+   
+    function myFunction(id, name, query, search) {
+        console.log("jjj");
+        $("#hiddenId").val(id);
+        $("#hiddenQuery").val(query);
+        $("#hiddenSearch").val(search);
+        $("#hiddenName").val(name);
+        
+        var modal = document.getElementById("myModal1");
+        var span = document.getElementsByClassName("close1")[0];
+        span.onclick = function() {
+          modal.style.display = "none";
+        }
+        modal.style.display = "block";
+        window.onclick = function(event) {
+          if (event.target == modal) {
+            modal.style.display = "none";
+          }
+        }
+        document.getElementById("demo").innerHTML = id;
+
+    }
+</script>
+
+
+<!-- The Modal -->
+<div id="myModal2" class="modal2">
+
+  <!-- Modal content -->
+  <div class="modal2-content">
+    <div class="modal2-header">
+      <span class="close2">&times;</span>
+      <h2>Ajouter un element</h2>
+    </div>
+    <div class="modal2-body">
+         <form method="post" enctype="multipart/form-data" asp-controller="Attachement" asp-action="Upload">
+        <span>Select File:</span>
+        <input type="file" name="postedFiles" multiple/>
+        <input type="submit" value="Upload"/>
+        <br/>
+    
+    </form>
+    </div>
+   
+  </div>
+
+</div>
+
+<script>
+// Get the modal
+var modal2 = document.getElementById("myModal2");
+
+// Get the button that opens the modal
+var btn2 = document.getElementById("myBtn2");
+
+// Get the <span> element that closes the modal
+var span2 = document.getElementsByClassName("close2")[0];
+
+// When the user clicks the button, open the modal 
+btn2.onclick = function() {
+  modal2.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span2.onclick = function() {
+  modal2.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal2) {
+    modal2.style.display = "none";
+  }
+}
+</script>
+    </body>
+</html>
+

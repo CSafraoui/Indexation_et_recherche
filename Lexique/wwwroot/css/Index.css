@@ -1,0 +1,447 @@
+﻿@font-face {
+    font-family: 'Lato-Regular';
+    src: url('Lato-Regular.ttf') format('truetype');
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Lato-Regular;
+}
+
+body {
+    width: 100%;
+}
+
+.p1 {
+    cursor: pointer;
+}
+#row_1 {
+    
+}
+.col-sm {
+    margin-top: 20px;
+}
+#form {
+    
+}
+.card {
+    margin-top: 20px;
+}
+.card-body {
+    padding-top: 0px;
+}
+
+.paging-nav a {
+    margin: auto 1px;
+    text-decoration: none;
+    display: inline-block;
+    padding: 1px 7px;
+    background: #135097;
+    color: white;
+    border-radius: 3px;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+
+
+.paging-nav .selected-page {
+    background: #187ed5;
+    font-weight: bold;
+}
+
+
+
+.paging-nav {
+    float: right;
+    font-family: Arial, sans-serif;
+}
+
+.ui-tooltip {
+    /*border: 1px solid #eee;
+    background-color: green;
+    color: white;
+    padding: 5px 10px;
+    width: 200px;*/
+    width: 60px;
+    background-color: black;
+    opacity: 10;
+    color: #fff;
+    text-align: center;
+    font-size: 10px;
+    border-radius: 6px;
+}
+
+
+
+
+.modal1 {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal1-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 0;
+    border: 1px solid #888;
+    width: 80%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+
+@keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+
+/* The Close Button */
+.close1 {
+    color: white;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+    .close1:hover,
+    .close1:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+.modal1-header {
+    padding: 12px 16px;
+    background-color: #1c74db;
+    color: white;
+}
+
+.modal1-body {
+    padding: 22px 36px;
+}
+
+.modal1-footer {
+    padding: 10px 56px;
+    background-color: white;
+    height: 66px;
+}
+
+    
+
+
+
+
+
+
+.modal2 {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+#myBtn2 {
+    font-family: "Arial Black", Gadget, sans-serif;
+    color: #fff;
+    float: right;
+    font-size: 13px;
+    border: none;
+    min-width: 50px;
+    border-radius: 35px;
+    border: none;
+    outline: none !important;
+    margin-left: 10px;
+    width: 100px;
+    height: 46px;
+    padding: 7px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    cursor: pointer;
+    background-image: linear-gradient(to right, #135097 0%, #165cae 51%, #1c74db 100%);
+}
+/* Modal Content */
+.modal2-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 0;
+    height: 400px;
+    border-radius: 10px;
+    border: 1px solid #888;
+    width: 70%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+
+@keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+
+/* The Close Button */
+.close2 {
+    color: white;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+    .close2:hover,
+    .close2:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+.modal2-header {
+    padding: 2px 16px;
+    background-color: #1c74db;
+    color: white;
+    border-top-right-radius: 9px;
+    border-top-left-radius: 9px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.modal2-body {
+    padding: 12px 66px;
+}
+
+.modal2-footer {
+    padding: 10px 56px;
+    background-color:white;
+   
+    height: 66px;
+}
+
+
+
+
+/*.gradient-button {
+    font-family: "Arial Black", Gadget, sans-serif;*/
+    /*font-size: 20px;*/
+    /*padding: 7px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: #FFF;
+    box-shadow: 0 0 20px #eee;
+    width: 200px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    cursor: pointer;
+    display: inline-block;
+    border-radius: 35px;
+    background-image: linear-gradient(to right, #135097 0%, #165cae 51%, #1c74db 100%)
+
+}*/
+
+
+/*.gradient-button:hover {
+        box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+        background-position: right center;
+    */
+        /*margin: 8px 10px 12px;*/
+
+    /*}*/
+
+
+   
+
+
+
+.bar {
+    display: flex;
+    justify-content: flex-start;
+    background-color:rgba(0,0,0,0.19);
+}
+
+    /* Style the navigation bar links */
+    .bar div {
+     
+        padding: 14px 20px;
+        text-decoration: none;
+        text-align: center;
+    }
+
+.search-button {
+    transform: translateX(-40.5px);
+    z-index: 1;
+    border-radius: 35px;
+    border: none;
+    height: 44px;
+    color: #fff;
+    float: right;
+    font-size: 13px;
+    min-width: 50px;
+    outline: none !important;
+    padding: 0px 10px;
+    width: 100px;
+    font-family: "Arial Black", Gadget, sans-serif;
+    text-align: center;
+    text-transform: uppercase;
+    cursor: pointer;
+    background-image: linear-gradient(to right, #135097 0%, #165cae 51%, #1c74db 100%)
+}
+
+.seaech-input {
+    height: 44px;
+    width: 470px;
+    border-radius: 35px;
+    padding-right: 42px;
+    outline:none;
+    padding-left:8px;
+    border: 3px solid #135097;
+    z-index: 2;
+    background: white;
+    border-radius: 35px;
+}
+.search-type {
+    padding: 5px 26px;
+    font-family: "Arial Black", Gadget, sans-serif;
+}
+
+
+
+input[type='radio']:after {
+    
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    top: -2px;
+    left: -1px;
+    position: relative;
+    background-color: #d1d3d1;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 2px solid white;
+}
+
+input[type='radio']:checked:after {
+    
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    top: -2px;
+    left: -1px;
+    position: relative;
+    background-color: #135097;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 2px solid white;
+}
+
+.Btn {
+    font-family: "Arial Black", Gadget, sans-serif;
+    color: #fff;
+    float: right;
+    font-size: 13px;
+    border: none;
+    min-width: 50px;
+    border-radius: 35px;
+    border: none;
+    outline: none !important;
+    margin-left: 10px;
+    width: 100px;
+    height: 46px;
+    padding: 7px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    cursor: pointer;
+    background-image: linear-gradient(to right, #135097 0%, #165cae 51%, #1c74db 100%);
+}
+
+
+@media screen and (max-width: 767px) {
+    .modal2-content {
+        
+        height: 370px;
+        
+    }
+    .Btn {
+        width: 90px;
+        padding: 0px;
+    }
+    .seaech-input {
+        width: 350px;
+    }
+    
+}
+
+@media screen and (max-width: 991px) {
+    .search-type {
+        padding: 15px 16px;
+    }
+}

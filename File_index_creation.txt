@@ -1,0 +1,192 @@
+
+PUT /attachments
+{
+  "settings": {
+    "analysis": {
+      "filter": {
+        "french_elision": {
+          "type":         "elision",
+          "articles_case": true,
+          "articles": [
+              "l", "m", "t", "qu", "n", "s",
+              "j", "d", "c", "jusqu", "quoiqu",
+              "lorsqu", "puisqu"
+            ]
+        },
+        "french_stop": {
+          "type":       "stop",
+          "stopwords":  "_french_" 
+        },
+        "french_stemmer": {
+          "type":       "stemmer",
+          "language":   "light_french"
+        }
+        ,
+        "arabic_stop": {
+          "type":       "stop",
+          "stopwords":  "_arabic_" 
+        },
+        "arabic_keywords": {
+          "type":       "keyword_marker",
+          "keywords":   ["مثال"] 
+        },
+        "arabic_stemmer": {
+          "type":       "stemmer",
+          "language":   "arabic"
+        }
+      },
+      "analyzer": {
+        "french": {
+          "tokenizer":  "standard",
+          "filter": [
+            "french_elision",
+            "lowercase",
+            "asciifolding",
+            "french_stop",
+            "french_stemmer"
+          ]
+        },
+        "arabic": {
+          "tokenizer":  "standard",
+          "filter": [
+            "lowercase",
+            "decimal_digit",
+            "arabic_stop",
+            "arabic_normalization",
+            "arabic_keywords",
+            "arabic_stemmer"
+          ]
+        },
+        "path_hierarchy":{
+          "tokenizer":  "path_hierarchy"
+        },
+        "trigram": {
+            "type": "custom",
+            "tokenizer": "standard",
+            "filter": ["lowercase","shingle"]
+          }
+      }
+    }
+  },
+
+  "mappings" : {
+      "properties" : {
+        "attachment" : {
+          "properties" : {
+            "author" : {
+              "type" : "text",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "content" : {
+              "type" : "text",
+              "fields" : {
+                "trigram" : {
+              "type" : "text",
+              "analyzer" : "trigram"
+              },
+              "ar" : {
+              "type" : "text",
+              "analyzer" : "arabic"
+              },
+              "fr" : {
+              "type" : "text",
+              "analyzer" : "french"
+              },
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "content_length" : {
+              "type" : "long"
+            },
+            "content_type" : {
+              "type" : "text",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "date" : {
+              "type" : "date"
+            },
+            "detect_language" : {
+              "type" : "boolean"
+            },
+            "indexed_chars" : {
+              "type" : "long"
+            },
+            "keywords" : {
+              "type" : "text",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "language" : {
+              "type" : "text",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "name" : {
+              "type" : "text",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "title" : {
+              "type" : "text",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            }
+          }
+        },
+        "content" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+        "id" : {
+          "type" : "integer"
+        },
+        "name" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+        "path" : {
+          "type" : "text",
+          "analyzer" : "path_hierarchy"
+        }
+      }
+    }
+  }
